@@ -1,0 +1,271 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Papel {
+  ADMIN
+  GERENTE
+  OPERADOR
+}
+
+enum TipoMovimentacao {
+  ENTRADA
+  SAIDA
+  TRANSFERENCIA
+  AJUSTE
+}
+
+enum Canal {
+  PRODUCAO
+  LOJA_FISICA
+  ONLINE
+  REVENDEDORES
+  FORNECEDOR
+}
+
+enum TipoProduto {
+  PRODUTO_ACABADO
+  MATERIA_PRIMA
+  INSUMO
+}
+
+enum StatusOrdemProducao {
+  PENDENTE
+  EM_ANDAMENTO
+  CONCLUIDA
+  CANCELADA
+}
+
+// ========================
+// EMPRESA E USUÁRIOS
+// ========================
+
+model Empresa {
+  id           String    @id @default(uuid())
+  nome         String
+  cnpj         String    @unique
+  razaoSocial  String?
+  telefone     String?
+  endereco     String?
+  email        String?
+  ativo        Boolean   @default(true)
+  criadoEm    DateTime  @default(now())
+  atualizadoEm DateTime @updatedAt
+
+  usuarios     Usuario[]
+  @@map("empresa")
+}
+
+model Usuario {
+  id           String    @id @default(uuid())
+  empresaId    String
+  empresa      Empresa   @relation(fields: [empresaId], references: [id])
+  nome         String
+  email        String    @unique
+  senhaHash    String
+  cargo        String?
+  papel        Papel     @default(OPERADOR)
+  ativo        Boolean   @default(true)
+  criadoEm    DateTime  @default(now())
+  atualizadoEm DateTime @updatedAt
+
+  refreshTokens   RefreshToken[]
+  movimentacoes   MovimentacaoEstoque[]
+  ordensProducao  OrdemProducao[]
+  @@map("usuario")
+}
+
+model RefreshToken {
+  id         String   @id @default(uuid())
+  token      String   @unique
+  usuarioId  String
+  usuario    Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  expiresAt  DateTime
+  criadoEm  DateTime @default(now())
+  @@map("refresh_token")
+}
+
+// ========================
+// PRODUTOS E CATEGORIAS
+// ========================
+
+model CategoriaProduto {
+  id           String    @id @default(uuid())
+  nome         String    @unique
+  descricao    String?
+  ativo        Boolean   @default(true)
+  criadoEm    DateTime  @default(now())
+  atualizadoEm DateTime @updatedAt
+
+  produtos     Produto[]
+  @@map("categoria_produto")
+}
+
+model Produto {
+  id              String      @id @default(uuid())
+  sku             String      @unique
+  nome            String
+  descricao       String?
+  categoriaId     String
+  categoria       CategoriaProduto @relation(fields: [categoriaId], references: [id])
+  unidadeMedida   String      @default("UN")
+  tipoProduto     TipoProduto @default(PRODUTO_ACABADO)
+  precoVenda      Decimal     @db.Decimal(12, 2) @default(0)
+  precoCusto      Decimal     @db.Decimal(12, 2) @default(0)
+  estoqueMinimo   Int         @default(0)
+  estoqueMaximo   Int?
+  ativo           Boolean     @default(true)
+  criadoEm       DateTime    @default(now())
+  atualizadoEm   DateTime    @updatedAt
+
+  estoques        Estoque[]
+  movimentacoes   MovimentacaoEstoque[]
+  itensFichaTecnica FichaTecnicaItem[]
+  materiaisOrdem  OrdemProducaoMaterial[]
+  @@map("produto")
+}
+
+model FichaTecnica {
+  id              String    @id @default(uuid())
+  produtoId       String    @unique
+  rendimento      Decimal   @db.Decimal(12, 2) @default(1)
+  observacoes     String?
+  criadoEm       DateTime  @default(now())
+  atualizadoEm   DateTime  @updatedAt
+
+  itens           FichaTecnicaItem[]
+  @@map("ficha_tecnica")
+}
+
+model FichaTecnicaItem {
+  id              String       @id @default(uuid())
+  fichaTecnicaId  String
+  fichaTecnica    FichaTecnica @relation(fields: [fichaTecnicaId], references: [id], onDelete: Cascade)
+  produtoId       String
+  produto         Produto      @relation(fields: [produtoId], references: [id])
+  quantidadeNecessaria Decimal @db.Decimal(12, 2)
+  observacao      String?
+  @@map("ficha_tecnica_item")
+}
+
+// ========================
+// ESTOQUE
+// ========================
+
+model LocalEstoque {
+  id           String    @id @default(uuid())
+  empresaId    String?
+  nome         String
+  tipo         Canal     @default(LOJA_FISICA)
+  endereco     String?
+  ativo        Boolean   @default(true)
+  criadoEm    DateTime  @default(now())
+  atualizadoEm DateTime @updatedAt
+
+  estoques     Estoque[]
+  movimentacoesOrigem  MovimentacaoEstoque[] @relation("OrigemMovimentacao")
+  movimentacoesDestino MovimentacaoEstoque[] @relation("DestinoMovimentacao")
+  @@map("local_estoque")
+}
+
+model Estoque {
+  id                  String       @id @default(uuid())
+  produtoId           String
+  produto             Produto      @relation(fields: [produtoId], references: [id])
+  localEstoqueId      String
+  localEstoque        LocalEstoque @relation(fields: [localEstoqueId], references: [id])
+  quantidadeDisponivel Int         @default(0)
+  quantidadeReservada  Int         @default(0)
+  quantidadeMinima     Int         @default(0)
+  dataAtualizacao      DateTime    @default(now()) @updatedAt
+
+  @@unique([produtoId, localEstoqueId])
+  @@map("estoque")
+}
+
+model MovimentacaoEstoque {
+  id               String           @id @default(uuid())
+  tipo             TipoMovimentacao
+  produtoId        String
+  produto          Produto          @relation(fields: [produtoId], references: [id])
+  localOrigemId    String?
+  localOrigem      LocalEstoque?    @relation("OrigemMovimentacao", fields: [localOrigemId], references: [id])
+  localDestinoId   String?
+  localDestino     LocalEstoque?    @relation("DestinoMovimentacao", fields: [localDestinoId], references: [id])
+  quantidade       Int
+  observacao       String?
+  responsavelId    String?
+  responsavel      Usuario?         @relation(fields: [responsavelId], references: [id])
+  dataMovimentacao DateTime         @default(now())
+  criadoEm        DateTime         @default(now())
+
+  @@map("movimentacao_estoque")
+}
+
+// ========================
+// PRODUÇÃO
+// ========================
+
+model OrdemProducao {
+  id              String              @id @default(uuid())
+  responsavelId   String?
+  responsavel     Usuario?            @relation(fields: [responsavelId], references: [id])
+  status          StatusOrdemProducao @default(PENDENTE)
+  quantidadePlanejada Int
+  quantidadeProduzida Int             @default(0)
+  dataInicio      DateTime?
+  dataFim         DateTime?
+  observacao      String?
+  criadoEm       DateTime            @default(now())
+  atualizadoEm   DateTime            @updatedAt
+
+  materiais       OrdemProducaoMaterial[]
+  etapas          EtapaProducao[]
+  @@map("ordem_producao")
+}
+
+model OrdemProducaoMaterial {
+  id               String        @id @default(uuid())
+  ordemProducaoId  String
+  ordemProducao    OrdemProducao @relation(fields: [ordemProducaoId], references: [id], onDelete: Cascade)
+  produtoId        String
+  produto          Produto       @relation(fields: [produtoId], references: [id])
+  quantidadeNecessaria Decimal   @db.Decimal(12, 2)
+  quantidadeConsumida  Decimal   @db.Decimal(12, 2) @default(0)
+  unidadeMedida    String        @default("UN")
+  @@map("ordem_producao_material")
+}
+
+model EtapaProducao {
+  id               String        @id @default(uuid())
+  ordemProducaoId  String
+  ordemProducao    OrdemProducao @relation(fields: [ordemProducaoId], references: [id], onDelete: Cascade)
+  nome             String
+  status           String        @default("Pendente")
+  dataInicio       DateTime?
+  dataFim          DateTime?
+  observacao       String?
+  @@map("etapa_producao")
+}
+
+// ========================
+// ANÁLISE IA
+// ========================
+
+model AnaliseIA {
+  id             String   @id @default(uuid())
+  periodo        String
+  totalProdutos  Int      @default(0)
+  insights       Json     @default("[]")
+  previsoes      Json     @default("[]")
+  recomendacoes  Json     @default("[]")
+  dadosProcessados Json?
+  criadoEm      DateTime @default(now())
+  criadoPor     String?
+  @@map("analise_ia")
+}

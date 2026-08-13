@@ -1,0 +1,84 @@
+version: '3.9'
+
+services:
+  # ─────────────────────────────────────────
+  # Banco de dados PostgreSQL
+  # ─────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: estoque_ia_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: estoque_ia_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ─────────────────────────────────────────
+  # Backend NestJS
+  # ─────────────────────────────────────────
+  backend:
+    build:
+      context: ./Sistema_de_Analise_de_Estoque/backend
+      dockerfile: Dockerfile
+    container_name: estoque_ia_backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/estoque_ia_db?schema=public"
+      JWT_SECRET: "jwt_secret_producao_muito_forte_minimo_32_chars"
+      JWT_EXPIRATION: "15m"
+      REFRESH_TOKEN_SECRET: "refresh_token_secret_producao_muito_forte"
+      REFRESH_TOKEN_EXPIRATION: "7d"
+      PORT: 3001
+      NODE_ENV: production
+      CORS_ORIGIN: "http://localhost:5173"
+      ANTHROPIC_API_KEY: "${ANTHROPIC_API_KEY}"
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./Sistema_de_Analise_de_Estoque/backend:/app
+      - /app/node_modules
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/api/dashboard/kpis"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # ─────────────────────────────────────────
+  # Frontend React (desenvolvimento)
+  # ─────────────────────────────────────────
+  frontend:
+    build:
+      context: ./Sistema_de_Analise_de_Estoque
+      dockerfile: Dockerfile.frontend
+    container_name: estoque_ia_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      VITE_API_URL: "http://localhost:3001/api"
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./Sistema_de_Analise_de_Estoque:/app
+      - /app/node_modules
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  default:
+    name: estoque_ia_network
