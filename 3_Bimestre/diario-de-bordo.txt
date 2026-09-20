@@ -1,0 +1,162 @@
+📘 Diário de Bordo
+
+📅 01/08
+🔍 Atividades
+Pesquisa inicial para definição do tema do TCC
+Levantamento do problema real: pequeno varejo de moda sem controle de estoque ou pedidos
+👥 Contribuição
+Vinicius Oliveira
+
+📅 02/08
+🔍 Atividades
+Definição do escopo do projeto (sistema de análise inteligente de estoque com IA)
+Estruturação do objetivo geral e dos objetivos específicos do TCC
+👥 Contribuição
+Vinicius Oliveira
+
+📅 06/08
+🔍 Atividades
+Estudo da stack tecnológica a ser utilizada (FastAPI, SQLAlchemy, SQLite)
+Planejamento da arquitetura geral da aplicação (camadas de routers, dados e IA)
+👥 Contribuição
+Vinicius Oliveira
+
+📅 08/08
+🔍 Atividades
+Modelagem inicial do banco de dados (entidades Produto, Pedido e Usuario)
+Definição dos atributos e relacionamentos entre as tabelas
+👥 Contribuição
+Vinicius Oliveira
+
+📅 09/08
+🔍 Atividades
+Implementação dos modelos SQLAlchemy (models.py)
+Configuração da conexão com o banco SQLite (database.py)
+👥 Contribuição
+Vinicius Oliveira
+
+📅 13/08
+🔍 Atividades
+Implementação do sistema de autenticação (login, sessão e hash de senha)
+Criação dos papéis de usuário (admin e assistente) e das regras de permissão
+👥 Contribuição
+Vinicius Oliveira
+
+📅 15/08
+🔍 Atividades
+Desenvolvimento do CRUD de produtos (cadastro, edição, exclusão e listagem)
+Implementação das validações de dados de entrada
+👥 Contribuição
+Vinicius Oliveira
+
+📅 16/08
+🔍 Atividades
+Desenvolvimento do CRUD de pedidos
+Implementação da baixa automática de estoque na criação de pedidos e da devolução no cancelamento/exclusão
+👥 Contribuição
+Vinicius Oliveira
+
+📅 20/08
+🔍 Atividades
+Implementação dos endpoints de estoque (resumo, estoque baixo, produtos parados)
+Implementação do endpoint de dashboard/resumo com KPIs do mês
+👥 Contribuição
+Vinicius Oliveira
+
+📅 22/08
+🔍 Atividades
+Estudo da API da Anthropic (Claude) para integração de IA
+Planejamento da arquitetura de orquestrador com agentes especializados
+👥 Contribuição
+Vinicius Oliveira
+
+📅 23/08
+🔍 Atividades
+Implementação do módulo de resumo de dados (cálculo de faturamento, ticket médio, giro de estoque)
+Implementação do agente de IA responsável pela interpretação dos KPIs
+👥 Contribuição
+Vinicius Oliveira
+
+📅 27/08
+🔍 Atividades
+Implementação do agente de IA de detecção de anomalias
+Implementação do agente de IA de recomendações e do orquestrador que os integra
+👥 Contribuição
+Vinicius Oliveira
+
+📅 29/08
+🔍 Atividades
+Escrita de testes automatizados (pytest) para os módulos de produtos, pedidos e estoque
+Ajustes de regras de negócio identificados durante os testes
+👥 Contribuição
+Vinicius Oliveira
+
+📅 30/08
+🔍 Atividades
+Construção da primeira versão do front-end (templates e JavaScript básicos)
+Integração inicial das telas com a API via fetch
+👥 Contribuição
+Vinicius Oliveira
+
+📅 03/09
+🔍 Atividades
+Testes gerais do fluxo completo do sistema (cadastro até geração de análise de IA)
+Correção de bugs identificados na integração entre front-end e back-end
+👥 Contribuição
+Vinicius Oliveira
+
+📅 05/09
+🔍 Atividades
+Início da reformulação visual do front-end
+Definição da identidade visual inicial e criação dos design tokens em CSS (cores, tipografia, espaçamento)
+👥 Contribuição
+Vinicius Oliveira
+
+📅 06/09
+🔍 Atividades
+Redesign da tela de Resumo (KPIs, gráfico de vendas, alertas de estoque)
+Redesign da tela de Produtos (grade de cards, modal de cadastro/edição)
+👥 Contribuição
+Vinicius Oliveira
+
+📅 10/09
+🔍 Atividades
+Redesign da tela de Pedidos, incluindo modal de criação e edição com itens editáveis
+Ajustes de usabilidade no formulário de pedidos (seleção de produtos e quantidade)
+👥 Contribuição
+Vinicius Oliveira
+
+📅 12/09
+🔍 Atividades
+Implementação do sistema de notificações (toasts) para ações de sucesso e erro
+Padronização do feedback visual em todas as telas (criar, editar, excluir)
+👥 Contribuição
+Vinicius Oliveira
+
+📅 13/09
+🔍 Atividades
+Redesign da tela de Estoque com KPIs, busca e classificação por severidade
+Correção de bug de exibição relacionado ao carregamento da tela de IA
+👥 Contribuição
+Vinicius Oliveira
+
+📅 17/09
+🔍 Atividades
+Redesign do Painel de Análise de IA (destaque de faturamento, gráficos, cards de anomalias e recomendações)
+Correção do erro de interpretação da IA (ajuste do agente de KPIs para uso de tool use estruturado)
+👥 Contribuição
+Vinicius Oliveira
+
+📅 19/09
+🔍 Atividades
+Criação da identidade visual definitiva do sistema (nome "Fashion Analytics" e monograma FA)
+Aplicação da nova identidade nas telas do sistema
+👥 Contribuição
+Vinicius Oliveira
+
+📅 20/09
+🔍 Atividades
+Elaboração da documentação técnica completa do projeto
+Criação dos diagramas de modelagem (MER, DER, casos de uso, classes, sequência, componentes, implantação) e preparação do material para a apresentação
+👥 Contribuição
+Vinicius Oliveira
