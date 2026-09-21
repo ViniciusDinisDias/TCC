@@ -1,3 +1,4 @@
+Montando as entradas diárias com as contribuições de Matheus.
 📘 Diário de Bordo
 
 📅 01/08
@@ -6,13 +7,21 @@ Pesquisa inicial para definição do tema do TCC
 Levantamento do problema real: pequeno varejo de moda sem controle de estoque ou pedidos
 👥 Contribuição
 Vinicius Oliveira
-
+Matheus
 📅 02/08
 🔍 Atividades
 Definição do escopo do projeto (sistema de análise inteligente de estoque com IA)
 Estruturação do objetivo geral e dos objetivos específicos do TCC
 👥 Contribuição
 Vinicius Oliveira
+Matheus (redação dos objetivos na documentação)
+
+📅 04/08
+🔍 Atividades
+Início da coleta dos registros manuais de vendas e estoque da Fama Fashion (1º mês)
+Digitalização dos primeiros registros em planilha
+👥 Contribuição
+Matheus
 
 📅 06/08
 🔍 Atividades
@@ -20,6 +29,14 @@ Estudo da stack tecnológica a ser utilizada (FastAPI, SQLAlchemy, SQLite)
 Planejamento da arquitetura geral da aplicação (camadas de routers, dados e IA)
 👥 Contribuição
 Vinicius Oliveira
+Matheus (documentação das tecnologias escolhidas)
+
+📅 07/08
+🔍 Atividades
+Levantamento das informações que a loja registra (produtos, vendas, estoque) para apoiar a modelagem do banco
+Rascunho inicial do MER
+👥 Contribuição
+Matheus
 
 📅 08/08
 🔍 Atividades
@@ -27,6 +44,7 @@ Modelagem inicial do banco de dados (entidades Produto, Pedido e Usuario)
 Definição dos atributos e relacionamentos entre as tabelas
 👥 Contribuição
 Vinicius Oliveira
+Matheus (auxílio na modelagem e no MER)
 
 📅 09/08
 🔍 Atividades
@@ -34,6 +52,14 @@ Implementação dos modelos SQLAlchemy (models.py)
 Configuração da conexão com o banco SQLite (database.py)
 👥 Contribuição
 Vinicius Oliveira
+Matheus (documentação das tabelas e conferência com os dados reais da loja)
+
+📅 11/08
+🔍 Atividades
+Continuação da digitalização dos dados de vendas (1º e 2º mês)
+Organização dos dados em planilhas por mês
+👥 Contribuição
+Matheus
 
 📅 13/08
 🔍 Atividades
@@ -56,12 +82,20 @@ Implementação da baixa automática de estoque na criação de pedidos e da dev
 👥 Contribuição
 Vinicius Oliveira
 
+📅 18/08
+🔍 Atividades
+Coleta e digitalização dos dados de estoque dos 4 meses (produtos, quantidades e valores)
+Padronização dos nomes de produtos e categorias
+👥 Contribuição
+Matheus
+
 📅 20/08
 🔍 Atividades
 Implementação dos endpoints de estoque (resumo, estoque baixo, produtos parados)
 Implementação do endpoint de dashboard/resumo com KPIs do mês
 👥 Contribuição
 Vinicius Oliveira
+Matheus
 
 📅 22/08
 🔍 Atividades
@@ -69,6 +103,7 @@ Estudo da API da Anthropic (Claude) para integração de IA
 Planejamento da arquitetura de orquestrador com agentes especializados
 👥 Contribuição
 Vinicius Oliveira
+Matheus (documentação da arquitetura e da proposta de uso de IA)
 
 📅 23/08
 🔍 Atividades
@@ -77,12 +112,26 @@ Implementação do agente de IA responsável pela interpretação dos KPIs
 👥 Contribuição
 Vinicius Oliveira
 
+📅 25/08
+🔍 Atividades
+Conclusão da digitalização das vendas dos 4 meses
+Conferência dos dados digitalizados
+👥 Contribuição
+Matheus
+
 📅 27/08
 🔍 Atividades
 Implementação do agente de IA de detecção de anomalias
 Implementação do agente de IA de recomendações e do orquestrador que os integra
 👥 Contribuição
 Vinicius Oliveira
+Matheus (documentação do funcionamento dos agentes)
+
+📅 28/08
+🔍 Atividades
+Continuação da estrutura da documentação escrita do TCC, revisando tudo com base nas normas da ABNT 
+👥 Contribuição
+Matheus
 
 📅 29/08
 🔍 Atividades
@@ -91,12 +140,21 @@ Ajustes de regras de negócio identificados durante os testes
 👥 Contribuição
 Vinicius Oliveira
 
+
 📅 30/08
 🔍 Atividades
 Construção da primeira versão do front-end (templates e JavaScript básicos)
 Integração inicial das telas com a API via fetch
 👥 Contribuição
 Vinicius Oliveira
+Matheus (primeira revisão das telas do ponto de vista do usuário)
+
+📅 01/09
+🔍 Atividades
+Cadastro dos dados reais da Fama Fashion no sistema para os testes
+Conferência dos valores cadastrados com os registros originais
+👥 Contribuição
+Matheus
 
 📅 03/09
 🔍 Atividades
@@ -105,12 +163,20 @@ Correção de bugs identificados na integração entre front-end e back-end
 👥 Contribuição
 Vinicius Oliveira
 
+📅 04/09
+🔍 Atividades
+Testes de usabilidade das telas e registro dos problemas encontrados
+Atualização da documentação com os resultados dos testes
+👥 Contribuição
+Matheus
+
 📅 05/09
 🔍 Atividades
 Início da reformulação visual do front-end
 Definição da identidade visual inicial e criação dos design tokens em CSS (cores, tipografia, espaçamento)
 👥 Contribuição
 Vinicius Oliveira
+Matheus (sugestões de estilo para uma loja de moda e registro na documentação)
 
 📅 06/09
 🔍 Atividades
@@ -118,6 +184,12 @@ Redesign da tela de Resumo (KPIs, gráfico de vendas, alertas de estoque)
 Redesign da tela de Produtos (grade de cards, modal de cadastro/edição)
 👥 Contribuição
 Vinicius Oliveira
+
+📅 08/09
+🔍 Atividades
+Escrita das seções de metodologia e levantamento de requisitos da documentação
+👥 Contribuição
+Matheus
 
 📅 10/09
 🔍 Atividades
@@ -132,6 +204,7 @@ Implementação do sistema de notificações (toasts) para ações de sucesso e 
 Padronização do feedback visual em todas as telas (criar, editar, excluir)
 👥 Contribuição
 Vinicius Oliveira
+Matheus (revisão das mensagens exibidas ao usuário)
 
 📅 13/09
 🔍 Atividades
@@ -140,12 +213,28 @@ Correção de bug de exibição relacionado ao carregamento da tela de IA
 👥 Contribuição
 Vinicius Oliveira
 
+📅 15/09
+🔍 Atividades
+Revisão do MER e do DER com base no banco final
+Ajustes nos relacionamentos e nos nomes dos atributos
+👥 Contribuição
+Matheus
+Vinicius Oliveira
+
+📅 16/09
+🔍 Atividades
+Validação das informações dos relatórios e dos KPIs com os dados reais da loja
+Revisão da documentação escrita com base nas telas finais
+👥 Contribuição
+Matheus
+
 📅 17/09
 🔍 Atividades
 Redesign do Painel de Análise de IA (destaque de faturamento, gráficos, cards de anomalias e recomendações)
 Correção do erro de interpretação da IA (ajuste do agente de KPIs para uso de tool use estruturado)
 👥 Contribuição
 Vinicius Oliveira
+Matheus (validação dos relatórios gerados pela IA)
 
 📅 19/09
 🔍 Atividades
@@ -153,6 +242,7 @@ Criação da identidade visual definitiva do sistema (nome "Fashion Analytics" e
 Aplicação da nova identidade nas telas do sistema
 👥 Contribuição
 Vinicius Oliveira
+Matheus (revisão final das telas e atualização da documentação)
 
 📅 20/09
 🔍 Atividades
