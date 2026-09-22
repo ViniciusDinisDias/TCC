@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block scripts %}<script src="/static/js/pedidos.js?v={{ static_version('js/pedidos.js') }}" defer></script>{% endblock %}
+{% block conteudo %}
+<div class="topo">
+  <div>
+    <h1>Pedidos</h1>
+    <p class="subtitulo">Acompanhe os pedidos da loja física e do Shopee</p>
+  </div>
+  {% if usuario.papel == 'admin' %}
+  <button type="button" id="botao-novo-pedido" class="btn">+ Novo Pedido</button>
+  {% endif %}
+</div>
+
+<div class="busca">
+  <svg class="busca-icone" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+  <input type="text" id="busca-pedido" placeholder="Buscar por cliente ou canal...">
+</div>
+
+<div class="pedidos-grade" id="grade-pedidos"></div>
+
+<div id="modal-pedido-overlay" class="modal-overlay" hidden>
+  <div class="modal">
+    <div class="modal-cabecalho">
+      <h2 id="modal-pedido-titulo">Novo pedido</h2>
+      <button type="button" id="botao-fechar-modal-pedido" class="icon-btn" aria-label="Fechar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <form id="form-pedido" class="formulario formulario-modal">
+      <input type="hidden" id="pedido-id">
+
+      <div class="form-grid-2">
+        <div>
+          <label>Nome do cliente</label>
+          <input type="text" id="pedido-cliente-nome" required>
+        </div>
+        <div>
+          <label>Contato do cliente</label>
+          <input type="text" id="pedido-cliente-contato">
+        </div>
+      </div>
+
+      <div class="form-grid-2">
+        <div>
+          <label>Canal</label>
+          <select id="pedido-canal" required>
+            <option value="loja_fisica">Loja física</option>
+            <option value="shopee">Shopee</option>
+          </select>
+        </div>
+        <div>
+          <label>Status</label>
+          <select id="pedido-status" required></select>
+        </div>
+      </div>
+
+      <label class="secao-label">Itens do pedido</label>
+      <div id="itens-pedido" class="itens-lista"></div>
+      <button type="button" id="adicionar-item" class="btn-adicionar-item">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        Adicionar item
+      </button>
+
+      <div class="modal-rodape">
+        <button type="button" class="btn-secundario" id="botao-cancelar-pedido">Cancelar</button>
+        <button type="submit" class="btn" id="botao-salvar-pedido">Criar pedido</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

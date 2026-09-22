@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block scripts %}<script src="/static/js/painel_ia.js?v={{ static_version('js/painel_ia.js') }}" defer></script>{% endblock %}
+{% block conteudo %}
+<div id="ia-vazio" class="ia-estado-vazio">
+  <div class="ia-icone">🤖</div>
+  <h2>Análise inteligente</h2>
+  <p>Clique no botão abaixo para analisar seus dados e receber insights da IA.</p>
+  <button type="button" id="botao-analisar" class="btn btn-grande">Analisar com IA</button>
+</div>
+
+<div id="ia-carregando" class="ia-analisando" hidden>
+  <div class="spinner-ia"></div>
+  <p>Analisando dados com a IA — isso pode levar alguns segundos...</p>
+</div>
+
+<div id="ia-resultado" hidden>
+  <div class="ia-hero">
+    <div class="ia-hero-info">
+      <div class="ia-hero-label">Faturamento total (30 dias)</div>
+      <div class="ia-hero-valor" id="hero-faturamento-total">R$ 0,00</div>
+      <div class="ia-hero-meta" id="ultima-geracao"></div>
+    </div>
+    <div class="ia-hero-chips">
+      <div class="ia-hero-chip">
+        <div class="ia-hero-chip-label">Ticket médio</div>
+        <div class="ia-hero-chip-valor" id="chip-ticket-medio">—</div>
+      </div>
+      <div class="ia-hero-chip">
+        <div class="ia-hero-chip-label">Pedidos (30d)</div>
+        <div class="ia-hero-chip-valor" id="chip-pedidos-30d">—</div>
+      </div>
+      <div class="ia-hero-chip">
+        <div class="ia-hero-chip-label">Produto top</div>
+        <div class="ia-hero-chip-valor" id="chip-produto-top">—</div>
+      </div>
+    </div>
+    <div class="ia-hero-acoes">
+      <button type="button" id="botao-reanalisar" class="btn">Analisar novamente</button>
+    </div>
+  </div>
+
+  <div class="grid-principal">
+    <div class="painel">
+      <div class="painel-titulo"><h2>Faturamento por canal</h2></div>
+      <div class="grafico-alto"><canvas id="grafico-faturamento"></canvas></div>
+    </div>
+    <div class="painel">
+      <div class="painel-titulo"><h2>Top produtos vendidos</h2></div>
+      <div class="grafico-alto"><canvas id="grafico-top-produtos"></canvas></div>
+    </div>
+  </div>
+
+  <div class="painel painel-interpretacao">
+    <div class="painel-titulo"><h2>Interpretação da IA</h2></div>
+    <div class="interpretacao-corpo">
+      <div class="interpretacao-icone">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a5 5 0 0 0-5 5v2a5 5 0 0 0 10 0V7a5 5 0 0 0-5-5Z"/><path d="M8 21h8M12 17v4"/></svg>
+      </div>
+      <p id="texto-interpretacao" class="interpretacao-texto"></p>
+    </div>
+  </div>
+
+  <div class="painel">
+    <div class="painel-titulo"><h2>Anomalias detectadas</h2></div>
+    <div class="resumo-severidade" id="resumo-anomalias"></div>
+    <div id="lista-anomalias"></div>
+  </div>
+
+  <div class="painel">
+    <div class="painel-titulo"><h2>Recomendações</h2></div>
+    <div class="resumo-severidade" id="resumo-recomendacoes"></div>
+    <div id="lista-recomendacoes"></div>
+  </div>
+</div>
+{% endblock %}

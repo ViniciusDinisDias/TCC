@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block scripts %}<script src="/static/js/resumo.js?v={{ static_version('js/resumo.js') }}" defer></script>{% endblock %}
+{% block conteudo %}
+<div class="topo">
+  <div>
+    <h1>Resumo</h1>
+    <p class="subtitulo">Visão geral da loja física e do canal Shopee</p>
+  </div>
+  <div class="periodo" id="periodo-atual"><span class="ponto"></span> <span id="periodo-texto">Carregando...</span></div>
+</div>
+
+<div class="kpis" id="kpis-resumo"></div>
+
+<div class="grid-principal">
+  <div class="painel">
+    <div class="painel-titulo">
+      <h2><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18M18 9l-5 5-4-4-4 4"/></svg> Vendas nos últimos 6 meses</h2>
+      <span id="total-periodo" style="font-size:.82rem;color:var(--ink-soft);font-weight:600;"></span>
+    </div>
+    <div class="grafico-alto"><canvas id="grafico-vendas-mensais"></canvas></div>
+  </div>
+  <div class="painel">
+    <div class="painel-titulo">
+      <h2><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0ZM12 9v4M12 17h.01"/></svg> Alertas de estoque</h2>
+    </div>
+    <div id="lista-alertas-estoque"></div>
+  </div>
+</div>
+
+<div class="painel">
+  <div class="painel-titulo"><h2>Últimos pedidos</h2></div>
+  <table>
+    <thead><tr><th>Cliente</th><th>Canal</th><th>Data</th><th>Status</th><th>Valor</th></tr></thead>
+    <tbody id="tabela-ultimos-pedidos"></tbody>
+  </table>
+</div>
+{% endblock %}
