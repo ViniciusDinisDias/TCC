@@ -7,6 +7,56 @@ function formatarMoeda(valor) {
   return valor.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
+/** "Atualizado 12/09 · 20:18" — formato compacto para caber ao lado do botão. */
+function formatarDataCurta(iso) {
+  const d = new Date(iso);
+  const dois = (n) => String(n).padStart(2, "0");
+  return `Atualizado ${dois(d.getDate())}/${dois(d.getMonth() + 1)} · ${dois(d.getHours())}:${dois(d.getMinutes())}`;
+}
+
+/** Badge "▲ 12% vs. 30 dias anteriores". Sem dado do período anterior
+ * (pct null/undefined), o badge fica oculto — nunca mostra valor falso. */
+function renderizarVariacao(pct) {
+  const el = document.getElementById("hero-variacao");
+  if (pct === null || pct === undefined) {
+    el.hidden = true;
+    el.innerHTML = "";
+    return;
+  }
+  const positivo = pct >= 0;
+  el.hidden = false;
+  el.className = `ia-hero-variacao ${positivo ? "up" : "down"}`;
+  const seta = positivo
+    ? `<path d="M12 4l8 14H4z"/>`
+    : `<path d="M12 20 4 6h16z"/>`;
+  el.innerHTML = `
+    <svg class="ia-hero-variacao-icone" width="10" height="10" viewBox="0 0 24 24" fill="currentColor">${seta}</svg>
+    <span class="ia-hero-variacao-valor">${Math.abs(pct).toLocaleString("pt-BR")}%</span>
+    <span class="ia-hero-variacao-legenda">vs. 30 dias anteriores</span>
+  `;
+}
+
+/** Sparkline discreta (sem eixos) do faturamento diário dos últimos 30 dias. */
+function renderizarSparkline(svgEl, valores) {
+  if (!valores || !valores.length) {
+    svgEl.innerHTML = "";
+    return;
+  }
+  const largura = 120, altura = 32, margem = 3;
+  const maximo = Math.max(...valores);
+  const minimo = Math.min(...valores);
+  const amplitude = maximo - minimo || 1;
+  const passoX = valores.length > 1 ? largura / (valores.length - 1) : 0;
+  const pontos = valores
+    .map((v, i) => {
+      const x = (i * passoX).toFixed(1);
+      const y = (altura - margem - ((v - minimo) / amplitude) * (altura - margem * 2)).toFixed(1);
+      return `${x},${y}`;
+    })
+    .join(" ");
+  svgEl.innerHTML = `<polyline points="${pontos}"/>`;
+}
+
 function mostrarEstadoVazio() {
   document.getElementById("ia-vazio").hidden = false;
   document.getElementById("ia-carregando").hidden = true;
@@ -83,15 +133,19 @@ function renderizarAnalise(analise) {
   mostrarResultado();
 
   const dados = analise.kpis.dados_calculados;
-  const faturamentoTotal = Object.values(dados.faturamento_por_canal).reduce((soma, v) => soma + v, 0);
-  const produtoTop = dados.top_produtos_mais_vendidos[0]?.nome || "—";
+  const produtoTop = dados.produto_top_30_dias;
 
-  document.getElementById("hero-faturamento-total").textContent = `R$ ${formatarMoeda(faturamentoTotal)}`;
-  document.getElementById("ultima-geracao").textContent =
-    "Última análise: " + new Date(analise.gerado_em).toLocaleString("pt-BR");
-  document.getElementById("chip-ticket-medio").textContent = `R$ ${formatarMoeda(dados.ticket_medio)}`;
+  document.getElementById("hero-faturamento-total").textContent = `R$ ${formatarMoeda(dados.faturamento_total_30_dias)}`;
+  document.getElementById("ultima-geracao").textContent = formatarDataCurta(analise.gerado_em);
+  document.getElementById("chip-ticket-medio").textContent = `R$ ${formatarMoeda(dados.ticket_medio_30_dias)}`;
   document.getElementById("chip-pedidos-30d").textContent = dados.quantidade_pedidos_ultimos_30_dias;
-  document.getElementById("chip-produto-top").textContent = produtoTop;
+
+  const elProdutoTop = document.getElementById("chip-produto-top");
+  elProdutoTop.textContent = produtoTop ? produtoTop.nome : "—";
+  elProdutoTop.title = produtoTop ? produtoTop.nome : "";
+
+  renderizarVariacao(dados.variacao_faturamento_30_dias_pct);
+  renderizarSparkline(document.getElementById("hero-sparkline"), dados.serie_faturamento_diario_30_dias);
 
   // Interpretação da IA, com fallback elegante caso o texto venha com erro de parsing.
   const interpretacao = analise.kpis.interpretacao || "";
@@ -199,8 +253,26 @@ async function iniciarAnalise() {
   }
 }
 
+/** Reanálise a partir do hero: mantém o painel visível, só o botão
+ * gira/desabilita — sem trocar a tela inteira pelo estado de carregamento. */
+async function reanalisar() {
+  const botao = document.getElementById("botao-reanalisar");
+  botao.disabled = true;
+  botao.classList.add("girando");
+  try {
+    const analise = await chamarApi("/ia/analisar", { method: "POST" });
+    renderizarAnalise(analise);
+    exibirToast("Análise gerada com sucesso!");
+  } catch (erro) {
+    await exibirMensagem(erro.message, "Erro na análise");
+  } finally {
+    botao.disabled = false;
+    botao.classList.remove("girando");
+  }
+}
+
 document.getElementById("botao-analisar").addEventListener("click", iniciarAnalise);
-document.getElementById("botao-reanalisar").addEventListener("click", iniciarAnalise);
+document.getElementById("botao-reanalisar").addEventListener("click", reanalisar);
 
 (async function iniciar() {
   const ultima = await chamarApi("/ia/ultima");
