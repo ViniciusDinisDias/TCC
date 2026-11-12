@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block scripts %}<script src="/static/js/estoque.js?v={{ static_version('js/estoque.js') }}" defer></script>{% endblock %}
+{% block conteudo %}
+<div class="topo">
+  <div>
+    <h1>Estoque</h1>
+    <p class="subtitulo">Quantidade e valor financeiro dos produtos em estoque</p>
+  </div>
+</div>
+
+<div class="kpis" id="kpis-estoque"></div>
+
+<div class="topo" style="margin-bottom:var(--space-4);align-items:center;">
+  <div class="busca" style="margin-bottom:0;">
+    <svg class="busca-icone" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+    <input type="text" id="busca-estoque" placeholder="Buscar produto...">
+  </div>
+  <label style="display:flex;align-items:center;gap:.4rem;font-size:var(--text-sm);color:var(--ink-soft);cursor:pointer;white-space:nowrap;">
+    <input type="checkbox" id="filtro-estoque-baixo">
+    Mostrar só estoque baixo/zerado
+  </label>
+</div>
+
+<div class="card-tabela">
+  <table>
+    <thead>
+      <tr>
+        <th>Produto</th>
+        <th>Quantidade</th>
+        <th>Valor unitário</th>
+        <th>Valor em estoque</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="tabela-estoque"></tbody>
+  </table>
+</div>
+{% endblock %}
